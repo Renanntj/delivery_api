@@ -24,21 +24,45 @@ class Usuario(Base):
 class Pedido(Base):
     __tablename__ = "pedidos"
     
-    STATUS_PEDIDOS = (
-        (1, "PENDENTE"),
-        (2, "FINALIZADO"),
-        (3, "CANCELADO")  
-    )
+    # STATUS_PEDIDOS = (
+    #     (1, "PENDENTE"),
+    #     (2, "FINALIZADO"),
+    #     (3, "CANCELADO")  
+    # )
     id = Column("id", Integer, primary_key=True, autoincrement=True)
     usuario = Column("usuario", ForeignKey("usuarios.id"))
     preco = Column("preco", Float)
-    status = Column("status", ChoiceType(choices=STATUS_PEDIDOS)) # pendente cancelado finzalizado 
+    status = Column("status",String) # pendente cancelado finzalizado 
     
     def __init__(self, usuario, preco=0, status=1):
         self.usuario = usuario
         self.preco = preco
         self.status = status    
     
+class ItemPedido(Base):
+    __tablename__ = "itens_pedido"
+    
+    # TAMANHO_PEDIDOS = (
+        
+    #     (1, 'P'),
+    #     (2, 'M'),
+    #     (3, 'G')        
+    # )
+    
+    id = Column("id", Integer, primary_key=True, autoincrement=True)
+    quantidade =  Column(Integer)
+    sabor = Column(String)
+    tamanho = Column(String)
+    preco_uni  = Column(Float)
+    pedido = Column(ForeignKey("pedidos.id"))
+    
+    def __init__(self, quantidade, sabor, tamanho, preco_uni, pedido):
+        self.quantidade = quantidade
+        self.sabor = sabor
+        self.tamanho = tamanho
+        self.preco_uni = preco_uni
+        self.pedido = pedido
+        
 
 
     
