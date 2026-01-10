@@ -25,11 +25,9 @@ class Pedido(Base):
     __tablename__ = "pedidos"
     
     STATUS_PEDIDOS = (
-        
         (1, "PENDENTE"),
         (2, "FINALIZADO"),
-        (3, "CANCELADO")
-        
+        (3, "CANCELADO")  
     )
     id = Column("id", Integer, primary_key=True, autoincrement=True)
     usuario = Column("usuario", ForeignKey("usuarios.id"))
