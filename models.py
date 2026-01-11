@@ -62,7 +62,5 @@ class ItemPedido(Base):
         self.tamanho = tamanho
         self.preco_uni = preco_uni
         self.pedido = pedido
-        
-
-
-    
+   
+   
