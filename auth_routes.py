@@ -1,17 +1,18 @@
 from fastapi import APIRouter, Depends, HTTPException
 from models import Usuario
-from dependences import open_section
+from dependences import open_section, verificar_token
 from main import bcrypt_context, ALGORITHM, ACCESS_TOKEN_MINUTES, SECRET_KEY
 from schemas import UsuarioSchema, LoginSchema
 from sqlalchemy.orm import Session
 from jose import jwt, JWTError
 from datetime import datetime, timedelta, timezone
+from fastapi.security import OAuth2PasswordRequestForm
 
 auth_router = APIRouter(prefix="/auth", tags=["auth"])
 
-def criar_token(id_usuario):
-    data_expiração = datetime.now(timezone.utc) + timedelta(minutes=ACCESS_TOKEN_MINUTES)
-    dic_info = {"sub": id_usuario, "exp": data_expiração}
+def criar_token(id_usuario, duracao_token=timedelta(minutes=ACCESS_TOKEN_MINUTES)):
+    data_expiração = datetime.now(timezone.utc) + duracao_token
+    dic_info = {"sub": str(id_usuario), "exp": data_expiração}
     jwt_cod = jwt.encode(dic_info, SECRET_KEY, ALGORITHM)
     return jwt_cod
 
@@ -22,6 +23,8 @@ def autenticar_usuario(email, senha, session):
     elif not bcrypt_context.verify(senha, usuario.senha):
         return False
     return usuario
+
+
     
 @auth_router.get("/")
 async def home():
@@ -46,7 +49,30 @@ async def login(login_schema: LoginSchema, session : Session = Depends(open_sect
         raise HTTPException(status_code=401, detail='Email ou Senha invalidos.')
     else:
         access_token = criar_token(usuario.id)
+        refresh_token = criar_token(usuario.id, duracao_token=timedelta(days=7))
+
+        return {"access_token": access_token,
+                "refresh_token": refresh_token,
+                "token_type": "Bearer"
+                }
+        
+#security:
+@auth_router.post("/login-form")
+async def login_form(dados_form: OAuth2PasswordRequestForm = Depends(), session : Session = Depends(open_section)):
+    usuario = autenticar_usuario(dados_form.username, dados_form.password, session)
+    if not usuario:
+        raise HTTPException(status_code=401, detail='Email ou Senha invalidos.')
+    else:
+        access_token = criar_token(usuario.id)
         return {"access_token": access_token,
                 "token_type": "Bearer"
                 }
+
+@auth_router.get("/refresh")
+async def token_refresh(usuario: Session = Depends(verificar_token)):
+    access_token = criar_token(usuario.id)
+    return {"access_token": access_token,
+            "token_type": "Bearer"
+        }
+
 
