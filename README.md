@@ -45,21 +45,7 @@ Ela segue os princípios de uma **API REST**, utilizando:
 | Método | Endpoint   | Descrição |
 |--------|-----------|----------|
 | POST   | `/login`   | Autentica o usuário |
-| POST   | `/register`| Realiza cadastro de usuário |
-
----
-
-### 🛒 Pedidos (Orders)
-
-| Método | Endpoint           | Descrição |
-|--------|--------------------|----------|
-| GET    | `/orders/`         | Lista todos os pedidos |
-| GET    | `/orders/{id}`     | Busca pedido por ID |
-| POST   | `/orders/`         | Cria novo pedido |
-| PUT    | `/orders/{id}`     | Atualiza pedido existente |
-| DELETE | `/orders/{id}`     | Remove pedido |
-
-Esses endpoints implementam operações **CRUD** completas.
+| POST   | `/criar_conta`| Realiza cadastro de usuário |
 
 ---
 
@@ -70,8 +56,6 @@ A documentação REST é gerada automaticamente pelo FastAPI.
 Após iniciar o servidor, acesse:
 
 - `/docs` → Swagger UI  
-- `/redoc` → ReDoc
-
 ---
 
 ## 📂 Estrutura do Projeto
@@ -86,7 +70,6 @@ delivery_api/
 ├── models.py
 ├── order_routes.py
 ├── schemas.py
-├── tests.py
 ├── requirements.txt
 └── banco.db
 ```
@@ -139,14 +122,6 @@ http://127.0.0.1:8000
 ```
 
 ---
-
-## 🧪 Testes
-
-O projeto possui arquivo de testes:
-
-```
-pytest
-```
 
 ---
 
