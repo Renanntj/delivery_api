@@ -8,6 +8,17 @@ O projeto foi desenvolvido com foco em **organização, boas práticas e evoluç
 
 ---
 
+## 🚀 Deploy
+
+Esta API está publicada na plataforma Render para fins educacionais e de portfólio.
+
+Base URL:
+https://delivery-api-vwyp.onrender.com
+
+Documentação Swagger:
+https://delivery-api-vwyp.onrender.com/docs
+
+
 ## 🔍 Visão Geral
 
 A API oferece recursos para:
